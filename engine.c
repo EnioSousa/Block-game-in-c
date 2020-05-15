@@ -13,13 +13,19 @@ void start(Map *map)
   while( !state->gameOver )
     {
       playerInput(state, getch());
+	  
 
-      if ( num%cycle==0 )
-	forceDown(state);
+      if ( state->remove )
+	removeComplete(state);
+      
+      if ( !num )
+	{
+	  forceDown(state);
+	}
       
       display(state);
 
-      num++;
+      num = (num + 1)%cycle;
       
       nanosleep(&ts, NULL);
     }

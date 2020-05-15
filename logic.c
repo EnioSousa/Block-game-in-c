@@ -18,6 +18,8 @@ State *newState(Map *map)
   state->rotation = 0;
 
   state->gameOver = 0;
+
+  state->remove = 0;
   
   return state;
 }
@@ -151,6 +153,9 @@ void forceDown(State *state)
   if ( !moveDown(state) )
     {
       putPiece(state->map, state->piece, state->rotation, state->cur);
+
+      checkComplete(state);
+      
       resetState(state);    
     }
 }
@@ -174,4 +179,65 @@ void putPiece(Map *map, Piece *piece, int rotation, Point *p)
       if ( piece->form[rp.y][rp.x]!='.' && !outOfBound(map, &pos) )
 	map->board[pos.y][pos.x] = piece->form[rp.y][rp.x];
     }
+}
+
+void checkComplete(State *state)
+{
+  int iLim = PIECELIM * PIECELIM;
+
+  Point rp, pos;
+
+
+  for( int i=0; i<iLim; i++ )
+    {
+      rp.x = i%PIECELIM;
+      rp.y = i/PIECELIM;
+
+      pos.x = state->cur->x + rp.x;
+      pos.y = state->cur->y + rp.y;
+      
+      rotateCoordinates(&rp, state->rotation);
+
+      if ( state->piece->form[rp.y][rp.x]!='.' && lineComplete(state->map, pos.y) )
+	{
+	  changeLine(state->map, pos.y);
+	  state->remove++;
+	}
+    }
+}
+
+int lineComplete(Map *map, int y)
+{
+  for( int i=1; i<map->width-1; i++ )
+    if ( map->board[y][i]==' ' || map->board[y][i]=='=' )
+      return 0;
+  
+  return 1;
+}
+
+void changeLine(Map *map, int y)
+{
+  for( int i=1; i<map->width-1; i++ )
+    map->board[y][i] = '=';
+}
+
+void removeComplete(State *state)
+{
+  for( int i=0; i<state->map->height; i++ )
+    if ( state->map->board[i][1] == '=' )
+      removeLine(state->map, i);
+
+  state->score += state->remove==1 ? 10: state->remove==2 ? 25 : state->remove==3 ? 40: 60;
+
+  state->remove = 0;
+}
+
+void removeLine(Map *map, int y)
+{
+  for( int i=y; i>0; i-- )
+    for( int j=1; j<map->width-1; j++ )
+      map->board[i][j] = map->board[i-1][j];
+
+  for( int i=1; i<map->width-1; i++ )
+    map->board[0][i] = ' ';
 }

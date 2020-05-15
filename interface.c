@@ -6,23 +6,27 @@ void display(State *state)
 
   printPiece(state->piece, state->rotation, state->cur);
 
+  printScore(state->score, state->map->height, state->map->width);
+  
   refresh();
 }
 
 void printMap(Map *map)
 {
+  move(YSTART, XSTART);
+  
   int iLim = map->height;
   int jLim = map->width;
-
+  
   for( int i=0; i<iLim; i++ )
     {
+      move(YSTART+i, XSTART);
+      
       for( int j=0; j<jLim; j++ )
 	{
 	  addch(map->board[i][j]);
 	  addch(' ');
 	}
-
-      addch('\n');
     }
 
   move(XSTART, YSTART);
@@ -39,18 +43,27 @@ void printPiece(Piece *piece, int rotation, Point *p)
       rp.x = i%PIECELIM;
       rp.y = i/PIECELIM;
 
-      pos.x = XSTART + p->x + rp.x;
-      pos.y = YSTART + p->y + rp.y;
+      pos.x = p->x + rp.x;
+      pos.y = p->y + rp.y;
       
       rotateCoordinates(&rp, rotation);
 
       if ( piece->form[rp.y][rp.x]!='.' )
 	{
-	  move(pos.y, pos.x*2);
+	  move(YSTART + pos.y, XSTART + pos.x*2);
 	  addch(piece->form[rp.y][rp.x]);	  
 	}
     }
 
+  move(XSTART, YSTART);
+}
+
+void printScore(int score, int y, int x)
+{
+  move(0, 0);
+
+  printw("Score = %d", score);
+  
   move(XSTART, YSTART);
 }
 

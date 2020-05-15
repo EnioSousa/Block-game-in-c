@@ -13,7 +13,7 @@ typedef struct State
 
   Piece *piece;
 
-  int rotation, gameOver;
+  int rotation, gameOver, remove, score;
 
   Map *map;
   
@@ -37,5 +37,13 @@ void playerInput(State *state, int key);
 void forceDown(State *state);
 
 void putPiece(Map *map, Piece *piece, int rotation, Point *p);
+
+void checkComplete(State *state);
+int lineComplete(Map *map, int y);
+void changeLine(Map *map, int y);
+  
+void removeComplete(State *state);
+void removeLine(Map *map, int y);
+
 
 #endif
