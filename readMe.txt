@@ -3,7 +3,7 @@ $make clean
 $make
 
 How to run
-&./main
+$./main
 
 Rules:
 a -> move left
