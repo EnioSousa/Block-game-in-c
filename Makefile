@@ -5,7 +5,7 @@ DEPS = errorMessage.h point.h piece.h map.h interface.h engine.h logic.h
 
 ODIR=./bin
 
-_OBJ = test.o errorMessage.o point.o piece.o map.o interface.o engine.o logic.o
+_OBJ = game.o errorMessage.o point.o piece.o map.o interface.o engine.o logic.o
 OBJ = $(patsubst %,$(ODIR)/%,$(_OBJ))
 
 $(ODIR)/%.o: %.c $(DEPS)

@@ -2,6 +2,7 @@
 #define ENGINE
 
 #include <time.h>
+#include <unistd.h>
 
 #include "map.h"
 #include "interface.h"

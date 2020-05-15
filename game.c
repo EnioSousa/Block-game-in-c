@@ -8,6 +8,7 @@
 int main()
 {
   Map *map = newMap(18, 12);
+  
   srand(time(NULL));
   
   initscr();

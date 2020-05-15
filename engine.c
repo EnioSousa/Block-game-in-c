@@ -14,14 +14,13 @@ void start(Map *map)
     {
       playerInput(state, getch());
 	  
-
+      /* Condição verifica se existe alguma linha para remover*/
       if ( state->remove )
 	removeComplete(state);
-      
+
+      /* Condição verifica se podemos avançar com a peça para baixo*/
       if ( !num )
-	{
-	  forceDown(state);
-	}
+	forceDown(state);
       
       display(state);
 
@@ -29,4 +28,13 @@ void start(Map *map)
       
       nanosleep(&ts, NULL);
     }
+
+  move(0, 0);
+
+  system("clear");
+  printw("Your score was %d", state->score);
+
+  refresh();
+  
+  sleep(5);
 }
