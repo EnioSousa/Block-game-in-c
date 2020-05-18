@@ -240,7 +240,7 @@ void removeComplete(State *state)
     if ( state->map->board[i][1] == '=' )
       removeLine(state->map, i);
 
-  state->score += state->remove==1 ? 10: state->remove==2 ? 25 : state->remove==3 ? 40: 60;
+  state->score += state->remove==1 ? 100: state->remove==2 ? 250 : state->remove==3 ? 400: 600;
 
   state->remove = 0;
 }

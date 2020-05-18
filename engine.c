@@ -8,7 +8,7 @@ void start(Map *map)
   ts.tv_sec = 0;
   ts.tv_nsec = ( 50%1000 ) * 1000000;
 
-  int num = 0, cycle = 20;
+  int num = 0, cycle = 20, upCycle = 1;
 
   while( !state->gameOver )
     {
@@ -27,6 +27,15 @@ void start(Map *map)
       display(state);
 
       num = (num + 1)%cycle;
+
+      if ( upCycle && state->score && state->score%500==0 )
+	{
+	  cycle--;
+	  upCycle = 0;
+	}
+
+      else if ( state->score%500!=0 )
+	upCycle = 1;
 
       nanosleep(&ts, NULL);
     }
