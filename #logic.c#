@@ -8,7 +8,7 @@ State *newState(Map *map)
     errorMessageMem("newState");
 
   state->start = newPoint(map->width/2 - 3, 0);
-
+  
   state->cur = newPoint(state->start->x, state->start->y);
 
   state->piece = randomPiece(map->arrPiece, map->num);
@@ -20,7 +20,7 @@ State *newState(Map *map)
   state->gameOver = 0;
 
   state->remove = 0;
-
+  
   return state;
 }
 
@@ -51,7 +51,7 @@ int possiblePossition(Map *map, Piece *piece, int rotation, Point *p)
 
   for( int i=0; i<iLim; i++ )
     {
-      rp.x = i%PIECELIM;
+      rp.x = i%PIECELIM; 
       rp.y = i/PIECELIM;
 
       pos.x = p->x + rp.x;
@@ -69,7 +69,7 @@ int possiblePossition(Map *map, Piece *piece, int rotation, Point *p)
 
 int outOfBound(Map *map, Point *p)
 {
-  return p->y >= map->height || p->y < 0 || p->x >= map->width || p->x < 0 ? 1: 0;
+  return p->y >= map->height || p->y < 0 || p->x >= map->width || p->x < 0 ? 1: 0; 
 }
 
 void moveLeft(State *state)
@@ -79,7 +79,7 @@ void moveLeft(State *state)
   p.y = state->cur->y;
 
   state->cur->x += possiblePossition(state->map, state->piece, state->rotation, &p)==1 ? -1: 0;
-
+  
 }
 
 void moveRight(State *state)
@@ -88,7 +88,7 @@ void moveRight(State *state)
   p.x = state->cur->x + 1;
   p.y = state->cur->y;
 
-  state->cur->x += possiblePossition(state->map, state->piece, state->rotation, &p)==1 ? 1: 0;
+  state->cur->x += possiblePossition(state->map, state->piece, state->rotation, &p)==1 ? 1: 0;  
 }
 
 int moveDown(State *state)
@@ -143,36 +143,23 @@ void playerInput(State *state, int key)
       rotateRight(state);
       break;
 
-    case 'j':
-      allDown(state);
-      break;
-
     default:
       break;
     }
 }
 
-int forceDown(State *state)
+void forceDown(State *state)
 {
   if ( !moveDown(state) )
     {
       putPiece(state->map, state->piece, state->rotation, state->cur);
 
       checkComplete(state);
-
-      resetState(state);
-
-      return 0;
+      
+      resetState(state);    
     }
-
-  return 1;
 }
-
-void allDown(State *state)
-{
-  while ( forceDown(state) );
-}
-
+  
 void putPiece(Map *map, Piece *piece, int rotation, Point *p)
 {
   int iLim = PIECELIM * PIECELIM;
@@ -186,7 +173,7 @@ void putPiece(Map *map, Piece *piece, int rotation, Point *p)
 
       pos.x = p->x + rp.x;
       pos.y = p->y + rp.y;
-
+      
       rotateCoordinates(&rp, rotation);
 
       if ( piece->form[rp.y][rp.x]!='.' && !outOfBound(map, &pos) )
@@ -208,7 +195,7 @@ void checkComplete(State *state)
 
       pos.x = state->cur->x + rp.x;
       pos.y = state->cur->y + rp.y;
-
+      
       rotateCoordinates(&rp, state->rotation);
 
       if ( state->piece->form[rp.y][rp.x]!='.' && lineComplete(state->map, pos.y) )
@@ -224,7 +211,7 @@ int lineComplete(Map *map, int y)
   for( int i=1; i<map->width-1; i++ )
     if ( map->board[y][i]==' ' || map->board[y][i]=='=' )
       return 0;
-
+  
   return 1;
 }
 

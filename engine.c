@@ -9,11 +9,13 @@ void start(Map *map)
   ts.tv_nsec = ( 50%1000 ) * 1000000;
 
   int num = 0, cycle = 20;
-  
+
   while( !state->gameOver )
     {
       playerInput(state, getch());
-	  
+
+      flushinp();
+
       /* Condição verifica se existe alguma linha para remover*/
       if ( state->remove )
 	removeComplete(state);
@@ -21,11 +23,11 @@ void start(Map *map)
       /* Condição verifica se podemos avançar com a peça para baixo*/
       if ( !num )
 	forceDown(state);
-      
+
       display(state);
 
       num = (num + 1)%cycle;
-      
+
       nanosleep(&ts, NULL);
     }
 
@@ -35,6 +37,6 @@ void start(Map *map)
   printw("Your score was %d", state->score);
 
   refresh();
-  
+
   sleep(5);
 }
